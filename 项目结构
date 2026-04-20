@@ -1,0 +1,27 @@
+ai-poster-saas-mvp/
+│
+├── backend/
+│   ├── main.py              # FastAPI入口
+│   ├── graph.py             # LangGraph
+│   ├── agents/
+│   │   ├── intent.py
+│   │   ├── director.py
+│   │   ├── layout.py
+│   │   ├── style.py
+│   │   ├── prompt.py
+│   │   ├── critic.py
+│   ├── tools/
+│   │   ├── nanobanana.py
+│   │   ├── safe_prompt.py
+│
+├── frontend/
+│   ├── app/page.tsx        # Next.js UI
+│   ├── components/
+│   │   ├── PromptBox.tsx
+│   │   ├── ResultCanvas.tsx
+│
+├── docker-compose.yml
+├── Dockerfile.backend
+├── Dockerfile.frontend
+├── requirements.txt
+└── README.md
