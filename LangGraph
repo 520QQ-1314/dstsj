@@ -1,0 +1,40 @@
+from langgraph.graph import StateGraph, END
+from agents.intent import intent_agent
+from agents.director import director_agent
+from agents.layout import layout_agent
+from agents.style import style_agent
+from agents.prompt import prompt_agent
+from agents.critic import critic_agent
+from tools.nanobanana import generate_image
+
+class State(dict): pass
+
+def route(state):
+    return "generate" if state.get("score", 10) >= 8 else "prompt"
+
+graph = StateGraph(State)
+
+graph.add_node("intent", intent_agent)
+graph.add_node("director", director_agent)
+graph.add_node("layout", layout_agent)
+graph.add_node("style", style_agent)
+graph.add_node("prompt", prompt_agent)
+graph.add_node("critic", critic_agent)
+graph.add_node("generate", generate_image)
+
+graph.set_entry_point("intent")
+
+graph.add_edge("intent", "director")
+graph.add_edge("director", "layout")
+graph.add_edge("layout", "style")
+graph.add_edge("style", "prompt")
+graph.add_edge("prompt", "critic")
+
+graph.add_conditional_edges("critic", route, {
+    "prompt": "prompt",
+    "generate": "generate"
+})
+
+graph.add_edge("generate", END)
+
+app = graph.compile()
