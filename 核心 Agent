@@ -1,0 +1,13 @@
+from langchain_openai import ChatOpenAI
+import json
+
+llm = ChatOpenAI(model="gpt-4o-mini")
+
+def intent_agent(state):
+    res = llm.invoke(f"""
+Extract design intent in JSON.
+
+Input:
+{state['user_input']}
+""")
+    return {"intent": json.loads(res.content)}
